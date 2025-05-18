@@ -17,27 +17,25 @@ typedef struct _BENCHMARK_RESULTS {
 #define NUM_ITERATIONS 1000000
 
 // Device and symbolic link names
-#define DEVICE_NAME L"\\Device\\IrqlBenchmark"
-#define SYMLINK_NAME L"\\DosDevices\\IrqlBenchmark"
+#define DEVICE_NAME L"\\Device\\irqlbench"
+#define SYMLINK_NAME L"\\DosDevices\\irqlbench"
 
 #define CONVERT_100NS_TO_US(x) ((x) / 10)
 
 // Benchmark function
 void BenchmarkIrql(PBENCHMARK_RESULTS results) {
     ULONGLONG start, end;
-    ULONGLONG totalRead = 0,
-              totalWrite = 0,
-              totalInc = 0,
-              totalIncNofence = 0;
     KIRQL originalIrql;
     volatile LONG Counter = 0;
     volatile LONG CounterNoFence = 0;
     ULONG64 Ununsed;
 
+    // Disable interrupts to reduce noise
+    _disable();
+
     // Benchmark read (KeGetCurrentIrql)
     start = KeQueryInterruptTimePrecise(&Ununsed);
     for (ULONG i = 0; i < NUM_ITERATIONS; i++) {
-        KeGetCurrentIrql();
         KeGetCurrentIrql();
     }
     end = KeQueryInterruptTimePrecise(&Ununsed);
@@ -71,6 +69,9 @@ void BenchmarkIrql(PBENCHMARK_RESULTS results) {
     }
     end = KeQueryInterruptTimePrecise(&Ununsed);
     results->InterlockedIncrementNoFenceCycles = CONVERT_100NS_TO_US(end - start);
+
+    // Re-enable interrupts
+    _enable();
 }
 
 // Driver unload routine
@@ -87,7 +88,7 @@ VOID DriverUnload(PDRIVER_OBJECT DriverObject) {
         IoDeleteDevice(deviceObject);
     }
 
-    DbgPrint("IrqlBenchmark: Driver unloaded\n");
+    DbgPrint("irqlbench: Driver unloaded\n");
 }
 
 // Device control routine
@@ -121,7 +122,7 @@ NTSTATUS DeviceControl(PDEVICE_OBJECT DeviceObject, PIRP Irp) {
 
 NTSTATUS CreateClose(PDEVICE_OBJECT DeviceObject, PIRP Irp) {
     UNREFERENCED_PARAMETER(DeviceObject);
-    DbgPrint("IrqlBenchmark: CreateClose called\n");
+    DbgPrint("irqlbench: CreateClose called\n");
     Irp->IoStatus.Status = STATUS_SUCCESS;
     Irp->IoStatus.Information = 0;
     IoCompleteRequest(Irp, IO_NO_INCREMENT);
@@ -143,7 +144,7 @@ NTSTATUS DriverEntry(PDRIVER_OBJECT DriverObject, PUNICODE_STRING RegistryPath) 
     // Create device object
     status = IoCreateDevice(DriverObject, 0, &deviceName, FILE_DEVICE_UNKNOWN, 0, FALSE, &deviceObject);
     if (!NT_SUCCESS(status)) {
-        DbgPrint("IrqlBenchmark: Failed to create device (0x%08X)\n", status);
+        DbgPrint("irqlbench: Failed to create device (0x%08X)\n", status);
         return status;
     }
 
@@ -151,7 +152,7 @@ NTSTATUS DriverEntry(PDRIVER_OBJECT DriverObject, PUNICODE_STRING RegistryPath) 
     status = IoCreateSymbolicLink(&symlinkName, &deviceName);
     if (!NT_SUCCESS(status)) {
         IoDeleteDevice(deviceObject);
-        DbgPrint("IrqlBenchmark: Failed to create symbolic link (0x%08X)\n", status);
+        DbgPrint("irqlbench: Failed to create symbolic link (0x%08X)\n", status);
         return status;
     }
 
@@ -161,6 +162,6 @@ NTSTATUS DriverEntry(PDRIVER_OBJECT DriverObject, PUNICODE_STRING RegistryPath) 
     DriverObject->MajorFunction[IRP_MJ_CLOSE] = CreateClose;
     DriverObject->MajorFunction[IRP_MJ_DEVICE_CONTROL] = DeviceControl;
 
-    DbgPrint("IrqlBenchmark: Driver loaded successfully\n");
+    DbgPrint("irqlbench: Driver loaded successfully\n");
     return STATUS_SUCCESS;
 }

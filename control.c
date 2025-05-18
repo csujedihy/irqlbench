@@ -16,7 +16,7 @@ int main() {
     DWORD bytesReturned;
 
     // Open device
-    hDevice = CreateFileW(L"\\\\.\\IrqlBenchmark", GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
+    hDevice = CreateFileW(L"\\\\.\\irqlbench", GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
     if (hDevice == INVALID_HANDLE_VALUE) {
         printf("Failed to open device: %d\n", GetLastError());
         return 1;

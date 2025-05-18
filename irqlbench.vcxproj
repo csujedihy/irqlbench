@@ -21,7 +21,6 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{A7B3C2E4-8C9D-4B1E-9F7C-2D3E5B6A1C2F}</ProjectGuid>
-    <Keyword>Win32Proj</Keyword>
     <RootNamespace>irqlbench</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <TargetExt>.sys</TargetExt>
@@ -30,162 +29,31 @@
     <WindowsTargetPlatformVersion>10.0.26100.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Driver</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>WindowsKernelModeDriver10.0</PlatformToolset>
-    <DriverType>WDM</DriverType>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Driver</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>WindowsKernelModeDriver10.0</PlatformToolset>
-    <DriverType>WDM</DriverType>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'" Label="Configuration">
-    <ConfigurationType>Driver</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>WindowsKernelModeDriver10.0</PlatformToolset>
-    <DriverType>WDM</DriverType>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'" Label="Configuration">
+  <PropertyGroup Label="Configuration">
     <ConfigurationType>Driver</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>WindowsKernelModeDriver10.0</PlatformToolset>
     <DriverType>WDM</DriverType>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-  <ImportGroup Label="ExtensionSettings">
-  </ImportGroup>
-  <ImportGroup Label="Shared">
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+  <PropertyGroup>
     <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)obj\$(Platform)\$(Configuration)\driver\</IntDir>
     <TargetName>irqlbench</TargetName>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)obj\$(Platform)\$(Configuration)\driver\</IntDir>
-    <TargetName>irqlbench</TargetName>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
-    <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)obj\$(Platform)\$(Configuration)\driver\</IntDir>
-    <TargetName>irqlbench</TargetName>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
-    <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)obj\$(Platform)\$(Configuration)\driver\</IntDir>
-    <TargetName>irqlbench</TargetName>
-  </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <DriverSign>
-      <FileDigestAlgorithm>sha256</FileDigestAlgorithm>
-      <SignMode>TestSign</SignMode>
-    </DriverSign>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(WDK_INC_PATH)</AdditionalIncludeDirectories>
-      <BufferSecurityCheck>true</BufferSecurityCheck>
-      <FunctionLevelLinking>false</FunctionLevelLinking>
-      <TreatWarningAsError>true</TreatWarningAsError>
-      <DisableSpecificWarnings>4127;%(DisableSpecificWarnings)</DisableSpecificWarnings>
-    </ClCompile>
-    <Link>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(WDK_LIB_PATH)</AdditionalLibraryDirectories>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Native</SubSystem>
-      <EntryPointSymbol>DriverEntry</EntryPointSymbol>
-      <BaseAddress>0xFFFFF80000000000</BaseAddress>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <DriverSign>
-      <FileDigestAlgorithm>sha256</FileDigestAlgorithm>
-      <SignMode>TestSign</SignMode>
-    </DriverSign>
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(WDK_INC_PATH)</AdditionalIncludeDirectories>
-      <BufferSecurityCheck>true</BufferSecurityCheck>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <TreatWarningAsError>true</TreatWarningAsError>
-      <DisableSpecificWarnings>4127;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
-    <Link>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(WDK_LIB_PATH)</AdditionalLibraryDirectories>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Native</SubSystem>
-      <EntryPointSymbol>DriverEntry</EntryPointSymbol>
-      <BaseAddress>0xFFFFF80000000000</BaseAddress>
-    </Link>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
+  <ItemDefinitionGroup>
     <DriverSign>
       <FileDigestAlgorithm>sha256</FileDigestAlgorithm>
       <SignMode>TestSign</SignMode>
     </DriverSign>
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(WDK_INC_PATH)</AdditionalIncludeDirectories>
-      <BufferSecurityCheck>true</BufferSecurityCheck>
-      <FunctionLevelLinking>false</FunctionLevelLinking>
-      <TreatWarningAsError>true</TreatWarningAsError>
-      <DisableSpecificWarnings>4127;%(DisableSpecificWarnings)</DisableSpecificWarnings>
-    </ClCompile>
     <Link>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(WDK_LIB_PATH)</AdditionalLibraryDirectories>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Native</SubSystem>
-      <EntryPointSymbol>DriverEntry</EntryPointSymbol>
-      <BaseAddress>0xFFFFF80000000000</BaseAddress>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
-    <DriverSign>
-      <FileDigestAlgorithm>sha256</FileDigestAlgorithm>
-      <SignMode>TestSign</SignMode>
-    </DriverSign>
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(WDK_INC_PATH)</AdditionalIncludeDirectories>
-      <BufferSecurityCheck>true</BufferSecurityCheck>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <TreatWarningAsError>true</TreatWarningAsError>
-      <DisableSpecificWarnings>4127;%(DisableSpecificWarnings)</DisableSpecificWarnings>
-    </ClCompile>
-    <Link>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(WDK_LIB_PATH)</AdditionalLibraryDirectories>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Native</SubSystem>
-      <EntryPointSymbol>DriverEntry</EntryPointSymbol>
-      <BaseAddress>0xFFFFF80000000000</BaseAddress>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
