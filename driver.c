@@ -7,10 +7,10 @@
 // Structure to hold benchmark results
 
 typedef struct _BENCHMARK_RESULTS {
-    ULONGLONG ReadCycles;
-    ULONGLONG WriteCycles;
-    ULONGLONG InterlockedIncrementCycles;
-    ULONGLONG InterlockedIncrementNoFenceCycles;
+    ULONGLONG ReadUs;
+    ULONGLONG WriteUs;
+    ULONGLONG InterlockedIncrementUs;
+    ULONGLONG InterlockedIncrementNoFenceUs;
 } BENCHMARK_RESULTS, * PBENCHMARK_RESULTS;
 
 // Number of iterations for benchmarking
@@ -39,7 +39,7 @@ void BenchmarkIrql(PBENCHMARK_RESULTS results) {
         KeGetCurrentIrql();
     }
     end = KeQueryInterruptTimePrecise(&Ununsed);
-    results->ReadCycles = CONVERT_100NS_TO_US(end - start);
+    results->ReadUs = CONVERT_100NS_TO_US(end - start);
 
     // Benchmark write (KeRaiseIrql/KeLowerIrql)
     KIRQL originalIrqlParent;
@@ -51,7 +51,7 @@ void BenchmarkIrql(PBENCHMARK_RESULTS results) {
         KeLowerIrql(originalIrql);
     }
     end = KeQueryInterruptTimePrecise(&Ununsed);
-    results->WriteCycles = CONVERT_100NS_TO_US(end - start);
+    results->WriteUs = CONVERT_100NS_TO_US(end - start);
     KeLowerIrql(originalIrqlParent);
 
     // Benchmark interlocked increment
@@ -60,7 +60,7 @@ void BenchmarkIrql(PBENCHMARK_RESULTS results) {
         InterlockedIncrement(&Counter);
     }
     end = KeQueryInterruptTimePrecise(&Ununsed);
-    results->InterlockedIncrementCycles = CONVERT_100NS_TO_US(end - start);
+    results->InterlockedIncrementUs = CONVERT_100NS_TO_US(end - start);
 
     // Benchmark interlocked increment without fence
     start = KeQueryInterruptTimePrecise(&Ununsed);
@@ -68,7 +68,7 @@ void BenchmarkIrql(PBENCHMARK_RESULTS results) {
         InterlockedIncrementNoFence(&CounterNoFence);
     }
     end = KeQueryInterruptTimePrecise(&Ununsed);
-    results->InterlockedIncrementNoFenceCycles = CONVERT_100NS_TO_US(end - start);
+    results->InterlockedIncrementNoFenceUs = CONVERT_100NS_TO_US(end - start);
 
     // Re-enable interrupts
     _enable();

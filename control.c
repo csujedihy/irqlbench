@@ -4,10 +4,10 @@
 #define IOCTL_BENCHMARK_IRQL CTL_CODE(FILE_DEVICE_UNKNOWN, 0x800, METHOD_BUFFERED, FILE_ANY_ACCESS)
 
 typedef struct _BENCHMARK_RESULTS {
-    ULONGLONG ReadCycles;
-    ULONGLONG WriteCycles;
-    ULONGLONG InterlockedIncrementCycles;
-    ULONGLONG InterlockedIncrementNoFenceCycles;
+    ULONGLONG ReadUs;
+    ULONGLONG WriteUs;
+    ULONGLONG InterlockedIncrementUs;
+    ULONGLONG InterlockedIncrementNoFenceUs;
 } BENCHMARK_RESULTS, * PBENCHMARK_RESULTS;
 
 int main() {
@@ -30,10 +30,10 @@ int main() {
     }
 
     // Print results
-    printf("IRQL Read (KeGetCurrentIrql): %llu cycles\n", results.ReadCycles);
-    printf("IRQL Write (KeRaiseIrql/KeLowerIrql): %llu cycles\n", results.WriteCycles);
-    printf("InterlockedIncrement: %llu cycles\n", results.InterlockedIncrementCycles);
-    printf("InterlockedIncrementNoFence: %llu cycles\n", results.InterlockedIncrementNoFenceCycles);
+    printf("IRQL Read (KeGetCurrentIrql): %llu us\n", results.ReadUs);
+    printf("IRQL Write (KeRaiseIrql/KeLowerIrql): %llu us\n", results.WriteUs);
+    printf("InterlockedIncrement: %llu us\n", results.InterlockedIncrementUs);
+    printf("InterlockedIncrementNoFence: %llu us\n", results.InterlockedIncrementNoFenceUs);
 
     CloseHandle(hDevice);
     return 0;
